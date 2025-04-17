@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-no-name
+  namespace: ms-no-name-namespace
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      type: ms
+  template:
+    metadata:
+      name: ms-no-name-02
+      labels:
+        type: ms
+    spec:
+      containers:
+        - name: api
+          image: golang-api:v1
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-no-name
+spec:
+  selector:
+    type: ms
+  ports:
+    - port: 80
+      targetPort: 8000
+      nodePort: 30000
+  type: NodePort

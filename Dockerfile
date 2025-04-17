@@ -1,4 +1,3 @@
-# Etapa 1: build
 FROM golang:1.24.1 AS builder
 
 WORKDIR /app
@@ -10,7 +9,6 @@ COPY . .
 
 RUN GOARCH=amd64 GOOS=linux go build -o /app/bin/main ./cmd/api/main.go
 
-# amd image
 FROM debian:bullseye-slim
 
 WORKDIR /app
