@@ -1,0 +1,31 @@
+name: Go CI with Docker
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run golangci-lint from Docker Hub
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/app \
+            -w /app \
+            golangci/golangci-lint:v1.55.2 \
+            golangci-lint run
+
+      - name: Run Go tests using Go 1.24.1 from Docker Hub
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/app \
+            -w /app \
+            golang:1.24.1 \
+            bash -c "go mod download && make test"
