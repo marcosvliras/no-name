@@ -8,7 +8,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	stock "github.com/marcosvliras/no-name/stock"
+	stock "github.com/marcosvliras/sophie/stock"
 )
 
 // MockISVC is a mock of ISVC interface.

@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/marcosvliras/no-name/stock"
+	"github.com/marcosvliras/sophie/stock"
 )
 
 type AlphavantageGateway struct {

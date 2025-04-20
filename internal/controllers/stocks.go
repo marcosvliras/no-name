@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/marcosvliras/no-name/internal/service"
+	"github.com/marcosvliras/sophie/internal/service"
 )
 
 type ICtrl interface {

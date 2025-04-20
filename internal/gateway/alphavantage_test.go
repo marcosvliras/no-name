@@ -3,7 +3,7 @@ package gateway
 import (
 	"testing"
 
-	m "github.com/marcosvliras/no-name/internal/gateway/mock_gateway"
+	m "github.com/marcosvliras/sophie/internal/gateway/mock_gateway"
 	"github.com/stretchr/testify/assert"
 )
 

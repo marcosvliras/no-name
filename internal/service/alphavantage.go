@@ -7,8 +7,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/marcosvliras/no-name/internal/gateway"
-	"github.com/marcosvliras/no-name/stock"
+	"github.com/marcosvliras/sophie/internal/gateway"
+	"github.com/marcosvliras/sophie/stock"
 )
 
 type AlphavantageSVC struct {

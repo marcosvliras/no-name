@@ -4,8 +4,8 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
-	"github.com/marcosvliras/no-name/internal/controllers"
-	"github.com/marcosvliras/no-name/internal/service"
+	"github.com/marcosvliras/sophie/internal/controllers"
+	"github.com/marcosvliras/sophie/internal/service"
 )
 
 func main() {

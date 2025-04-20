@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ms-no-name
-  namespace: ms-no-name-namespace
+  name: ms-sophie
+  namespace: ms-sophie
 spec:
   replicas: 3
   selector:
@@ -10,7 +10,7 @@ spec:
       type: ms
   template:
     metadata:
-      name: ms-no-name-02
+      name: ms-sophie
       labels:
         type: ms
     spec:
@@ -30,7 +30,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ms-no-name
+  name: ms-sophie
 spec:
   selector:
     type: ms

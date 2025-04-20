@@ -8,8 +8,8 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	m "github.com/marcosvliras/no-name/internal/gateway/mock_gateway"
-	"github.com/marcosvliras/no-name/stock"
+	m "github.com/marcosvliras/sophie/internal/gateway/mock_gateway"
+	"github.com/marcosvliras/sophie/stock"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/marcosvliras/no-name/internal/service"
-	"github.com/marcosvliras/no-name/printer"
+	"github.com/marcosvliras/sophie/internal/service"
+	"github.com/marcosvliras/sophie/printer"
 	"github.com/spf13/cobra"
 )
 

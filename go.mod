@@ -1,4 +1,4 @@
-module github.com/marcosvliras/no-name
+module github.com/marcosvliras/sophie
 
 go 1.24.1
 
