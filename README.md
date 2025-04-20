@@ -24,6 +24,22 @@ export PATH=$PATH:$(go env GOPATH)/bin
 ```
 stock get --symbols=BBAS3,ITUB4
 ```
+retreives the last price of the stocks BBAS3 and ITUB4
+
+```
+[
+  {
+    "Stock": "BBAS3.SAO",
+    "MaxStockPrice": 28.151388888888892,
+    "ActualPrice": 27.43
+  },
+  {
+    "Stock": "ITUB4.SAO",
+    "MaxStockPrice": 31.30833333333333,
+    "ActualPrice": 32.75
+  }
+]
+```
 
 4. Install local cli
 - 4.a Clone the repository
