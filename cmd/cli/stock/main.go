@@ -28,11 +28,8 @@ func main() {
 				return
 			}
 
-			fmt.Printf("Fetching data: %v\n", symbols)
-
 			result := svc.GetStockData(symbols)
-
-			printer.StdoutPrint(result)
+			printer.PrintAggStockDataTable(result)
 		},
 	}
 
