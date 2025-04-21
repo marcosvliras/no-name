@@ -41,10 +41,25 @@ retreives the last price of the stocks BBAS3 and ITUB4
 ]
 ```
 
-4. Install local cli
-- 4.a Clone the repository
-- 4.b Build the project
+
+4. Local
+
+- 4.a set up your environment with alphavante api key: https://www.alphavantage.co/documentation/
+```
+API_KEY=
+```
+- 4.b install `make`
+```
+brew install make
+```
+- 4.c install pre-commit
+```
+brew install pre-commit
+pre-commit install
+```
+- 4.d Clone the repository
+- 4.e go mod tidy
+- 4.f Build the project
 ```
 go build -o stock-cli cmd/cli/stock/main.go
 ```
-

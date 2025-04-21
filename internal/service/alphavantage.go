@@ -64,6 +64,8 @@ func (svc *AlphavantageSVC) agregateDividendPerYear(data stock.Stock) (stock.Agg
 	yearDividends := map[int]float64{}
 
 	var latestDate string
+
+	//TODO: Do not need iterate over all the years, just the last 6
 	for key, rawData := range data.MonthTimeSeries {
 		yearStr := strings.Split(key, "-")[0]
 		year, err := strconv.Atoi(yearStr)
