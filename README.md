@@ -10,17 +10,22 @@ When I mentioned the name to a few friends, one of them immediately thought of t
 
 ## CLI
 
-1. How to install stock cli
+1. set up your environment with alphavante api key: https://www.alphavantage.co/documentation/
+```
+API_KEY=
+```
+
+2. Install stock cli
 ```
 go install github.com/marcosvliras/sophie/cmd/cli/stock@latest
 ```
 
-2. Add /go/bin to your PATH
+3. Add /go/bin to your PATH
 ```
 export PATH=$PATH:$(go env GOPATH)/bin
 ```
 
-3. How to use stock cli
+4. How to use stock cli
 ```
 stock get --symbols=BBAS3,ITUB4
 ```
@@ -32,24 +37,24 @@ BBAS3.SAO  27.43         28.15
 ITSA4.SAO  9.95          7.27
 ```
 
-4. Local
+5. Local
 
-- 4.a set up your environment with alphavante api key: https://www.alphavantage.co/documentation/
-```
-API_KEY=
-```
-- 4.b install `make`
+- 5.1 install `make`
 ```
 brew install make
 ```
-- 4.c install pre-commit
+
+- 5.2 install pre-commit
 ```
 brew install pre-commit
 pre-commit install
 ```
-- 4.d Clone the repository
-- 4.e go mod tidy
-- 4.f Build the project
+
+- 5.3 Clone the repository
+
+- 5.4 go mod tidy
+
+- 5.5 Build the project
 ```
 go build -o stock-cli cmd/cli/stock/main.go
 ```
