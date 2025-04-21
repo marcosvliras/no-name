@@ -27,20 +27,10 @@ stock get --symbols=BBAS3,ITUB4
 retreives the last price of the stocks BBAS3 and ITUB4
 
 ```
-[
-  {
-    "Stock": "BBAS3.SAO",
-    "MaxStockPrice": 28.151388888888892,
-    "ActualPrice": 27.43
-  },
-  {
-    "Stock": "ITUB4.SAO",
-    "MaxStockPrice": 31.30833333333333,
-    "ActualPrice": 32.75
-  }
-]
+STOCK      ACTUAL PRICE  MAX PRICE
+BBAS3.SAO  27.43         28.15
+ITSA4.SAO  9.95          7.27
 ```
-
 
 4. Local
 
