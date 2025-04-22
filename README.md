@@ -17,7 +17,7 @@ API_KEY=
 
 2. Install stock cli
 ```
-go install github.com/marcosvliras/sophie/cmd/cli/stock@latest
+go install github.com/marcosvliras/sophie/cmd/cli/sophie@latest
 ```
 
 3. Add /go/bin to your PATH
@@ -27,7 +27,7 @@ export PATH=$PATH:$(go env GOPATH)/bin
 
 4. How to use stock cli
 ```
-stock get --symbols=BBAS3,ITUB4
+sophie get --symbols=BBAS3,ITUB4
 ```
 retreives the last price of the stocks BBAS3 and ITUB4
 
@@ -56,5 +56,5 @@ pre-commit install
 
 - 5.5 Build the project
 ```
-go build -o stock-cli cmd/cli/stock/main.go
+go build -o stock-cli cmd/cli/sophie/main.go
 ```

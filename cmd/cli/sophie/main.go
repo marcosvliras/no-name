@@ -15,7 +15,7 @@ func main() {
 	var symbols []string
 
 	var rootCmd = &cobra.Command{
-		Use:  "stock",
+		Use:  "sophie",
 		Long: "cli for get stock information",
 	}
 
