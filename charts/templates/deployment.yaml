@@ -25,3 +25,11 @@ spec:
             limits:
               memory: {{ .Values.resources.limits.memory }}
               cpu: {{ .Values.resources.limits.cpu }}
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.service.targetPort }}
+            initialDelaySeconds: {{ .Values.livelinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livelinessProbe.periodSeconds }}
+            successThreshold: {{ .Values.livelinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.livelinessProbe.failureThreshold }}
