@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-sophie
+  namespace: {{ .Values.namespace }}   # O namespace também deve vir do values.yaml
+spec:
+  selector:
+    type: ms
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      nodePort: {{ .Values.service.nodePort }}
+  type: {{ .Values.service.type }}   # O tipo do serviço, tipo 'NodePort'

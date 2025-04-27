@@ -1,0 +1,26 @@
+image:
+  repository: marcosls/sophie-api
+  tag: v1
+  pullPolicy: IfNotPresent
+namespace: ms-sophie
+replicaCount: 1
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "250m"
+  limits:
+    memory: "128Mi"
+    cpu: "500m"
+labels:
+  type: ms
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50
+  targetMemoryUtilizationPercentage: 50
+service:
+  type: NodePort 
+  port: 80
+  targetPort: 8000
+  nodePort: 30000
