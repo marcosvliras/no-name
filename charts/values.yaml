@@ -13,6 +13,12 @@ resources:
     cpu: "500m"
 labels:
   type: ms
+livelinessProbe:
+  initialDelaySeconds: 10
+  periodSeconds: 5
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 3
 autoscaling:
   enabled: true
   minReplicas: 1
