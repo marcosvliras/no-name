@@ -1,10 +1,11 @@
-apiVersion: argoproj.io/v1alpha1
+xiapiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
   name: rollout-{{ .Release.Name }}
   namespace: {{ .Values.namespace }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  progressDeadlineSeconds: 600
   strategy:
     canary:
       steps:
@@ -26,3 +27,9 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           ports:
             - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
