@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: rollout-{{ .Release.Name }}
+  namespace: argocd
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    canary:
+      steps:
+{{- range $index, $weight := .Values.canary.weightSteps }}
+        - setWeight: {{ $weight }}
+        - pause:
+            duration: {{ $.Values.canary.duration }}s
+{{- end }}
+  selector:
+    matchLabels:
+      type: {{ .Values.labels.type }}
+  template:
+    metadata:
+      labels:
+        type: {{ .Values.labels.type }}
+    spec:
+      containers:
+        - name: rollout
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: 80

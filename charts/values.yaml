@@ -3,7 +3,7 @@ image:
   tag: v1
   pullPolicy: IfNotPresent
 namespace: ms-sophie
-replicaCount: 1
+replicaCount: 2
 resources:
   requests:
     memory: "64Mi"
@@ -30,3 +30,7 @@ service:
   port: 80
   targetPort: 8000
   nodePort: 30000
+canary:
+  enabled: true
+  duration: 60
+  weightSteps: [10, 50, 100]
