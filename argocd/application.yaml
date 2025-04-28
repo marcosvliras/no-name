@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/marcosvliras/sophie
     path: charts
-    targetRevision: main
+    targetRevision: feat/add-charts
   destination:
     server: https://kubernetes.default.svc
     namespace: ms-sophie
