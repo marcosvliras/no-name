@@ -5,6 +5,7 @@
 package mock_service
 
 import (
+	"context"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
@@ -35,7 +36,7 @@ func (m *MockISVC) EXPECT() *MockISVCMockRecorder {
 }
 
 // GetStockData mocks base method.
-func (m *MockISVC) GetStockData(data []string) []stock.AggStockData {
+func (m *MockISVC) GetStockData(ctx context.Context, data []string) []stock.AggStockData {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetStockData", data)
 	ret0, _ := ret[0].([]stock.AggStockData)
@@ -43,7 +44,7 @@ func (m *MockISVC) GetStockData(data []string) []stock.AggStockData {
 }
 
 // GetStockData indicates an expected call of GetStockData.
-func (mr *MockISVCMockRecorder) GetStockData(data interface{}) *gomock.Call {
+func (mr *MockISVCMockRecorder) GetStockData(ctx context.Context, data interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetStockData", reflect.TypeOf((*MockISVC)(nil).GetStockData), data)
 }

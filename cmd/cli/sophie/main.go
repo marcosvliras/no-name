@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 
@@ -28,7 +29,7 @@ func main() {
 				return
 			}
 
-			result := svc.GetStockData(symbols)
+			result := svc.GetStockData(context.TODO(), symbols)
 			printer.PrintAggStockDataTable(result)
 		},
 	}

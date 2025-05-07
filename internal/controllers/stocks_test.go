@@ -23,7 +23,7 @@ func TestStocksCtrl(t *testing.T) {
 		maxPrice := 7.27
 		svc.
 			EXPECT().
-			GetStockData(gomock.Any()).
+			GetStockData(t.Context(), gomock.Any()).
 			Return([]stock.AggStockData{
 				{
 					Stock:         "ITSA4.SAO",
