@@ -5,5 +5,5 @@ repos:
         name: Run make lint
         entry: make lint
         language: system
-        stages: [commit]
+        stages: [pre-commit]
         types: [go]
