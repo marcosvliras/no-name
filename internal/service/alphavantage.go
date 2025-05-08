@@ -1,6 +1,7 @@
 package service
 
 import (
+	"context"
 	"fmt"
 	"strconv"
 	"strings"
@@ -8,6 +9,7 @@ import (
 	"time"
 
 	"github.com/marcosvliras/sophie/internal/gateway"
+	"github.com/marcosvliras/sophie/internal/tracing"
 	"github.com/marcosvliras/sophie/stock"
 )
 
@@ -22,40 +24,47 @@ func NewAlphavantageSVC() *AlphavantageSVC {
 	}
 }
 
-func (svc *AlphavantageSVC) GetStockData(data []string) []stock.AggStockData {
+func (svc *AlphavantageSVC) GetStockData(ctx context.Context, data []string) []stock.AggStockData {
+	ctx, span := tracing.Tracer.Start(ctx, "GetStockData")
+	defer span.End()
+
 	var wg sync.WaitGroup
 	stockData := make([]stock.AggStockData, len(data))
 
 	wg.Add(len(data))
 	for index, symbol := range data {
-		go func(symbol string, index int) {
+		go func(ctx context.Context, symbol string, index int) {
 
 			defer wg.Done()
-			aggData, err := svc.getSingleStockData(symbol)
+			aggData, err := svc.getSingleStockData(ctx, symbol)
 			if err != nil {
 				fmt.Println("Error fetching data for symbol:", symbol, "Error:", err)
 			}
 			stockData[index] = aggData
-		}(symbol, index)
+		}(ctx, symbol, index)
 	}
 	wg.Wait()
 
 	return stockData
 }
-func (svc *AlphavantageSVC) getSingleStockData(symbol string) (stock.AggStockData, error) {
+func (svc *AlphavantageSVC) getSingleStockData(ctx context.Context, symbol string) (stock.AggStockData, error) {
+	ctx, span := tracing.Tracer.Start(ctx, "getSingleStockData")
+	defer span.End()
 
 	data, err := svc.Gtw.GetData(symbol)
 	if err != nil {
 		return stock.AggStockData{}, err
 	}
-	aggData, err := svc.agregateDividendPerYear(data)
+	aggData, err := svc.agregateDividendPerYear(ctx, data)
 	if err != nil {
 		return stock.AggStockData{}, err
 	}
 	return aggData, nil
 }
 
-func (svc *AlphavantageSVC) agregateDividendPerYear(data stock.Stock) (stock.AggStockData, error) {
+func (svc *AlphavantageSVC) agregateDividendPerYear(ctx context.Context, data stock.Stock) (stock.AggStockData, error) {
+	_, span := tracing.Tracer.Start(ctx, "agregateDividendPerYear")
+	defer span.End()
 
 	stockAgg := stock.AggStockData{}
 	currentYear := time.Now().Year()

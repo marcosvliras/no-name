@@ -1,7 +1,10 @@
 package service
 
-import "github.com/marcosvliras/sophie/stock"
+import (
+	"github.com/marcosvliras/sophie/stock"
+	"golang.org/x/net/context"
+)
 
 type ISVC interface {
-	GetStockData(data []string) []stock.AggStockData
+	GetStockData(ctx context.Context, data []string) []stock.AggStockData
 }

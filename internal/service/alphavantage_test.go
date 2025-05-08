@@ -48,7 +48,7 @@ func TestAlphavantageSVC(t *testing.T) {
 			Gtw: gtwMock,
 		}
 		symbols := []string{"ITSA4", "BBAS3"}
-		r := svc.GetStockData(symbols)
+		r := svc.GetStockData(t.Context(), symbols)
 
 		assert.Equal(t, len(r), 2)
 		assert.Equal(t, r[0].Stock, "ITSA4.SAO")
@@ -72,7 +72,7 @@ func TestAlphavantageSVC(t *testing.T) {
 			Gtw: gtwMock,
 		}
 		symbols := []string{"ITSA4"}
-		r := svc.GetStockData(symbols)
+		r := svc.GetStockData(t.Context(), symbols)
 
 		assert.Equal(t, len(r), 1)
 		assert.Equal(t, r[0].Stock, "")
@@ -92,7 +92,7 @@ func TestAlphavantageSVC(t *testing.T) {
 			Gtw: gtwMock,
 		}
 		symbols := []string{"ITSA4"}
-		r := svc.GetStockData(symbols)
+		r := svc.GetStockData(t.Context(), symbols)
 
 		assert.Equal(t, len(r), 1)
 		assert.Equal(t, r[0].Stock, "")

@@ -15,4 +15,6 @@ WORKDIR /app
 
 COPY --from=builder /app/bin/main .
 
+RUN apt-get update && apt-get install -y ca-certificates
+
 CMD ["./main"]
