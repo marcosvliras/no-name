@@ -59,7 +59,7 @@ pre-commit install
 go build -o stock-cli cmd/cli/sophie/main.go
 ```
 
-# API [work in progress]
+# API 
 
 1. set up your environment with alphavante api key: https://www.alphavantage.co/documentation/
 ```
@@ -68,7 +68,6 @@ API_KEY=
 
 
 # Kubernetes
-## Deploying Sophie on Kubernetes
 
 Deploy ms-sophie on Kubernetes with ArgoCD, and Grafana/Prometheus/Tempo for observability.
 
@@ -77,7 +76,7 @@ Deploy ms-sophie on Kubernetes with ArgoCD, and Grafana/Prometheus/Tempo for obs
 API_KEY: 
 ```
 
-2. create argocd namespace
+2. create namespaces below
 ```
 kubectl create namespace argocd
 kubectl create namespace ms-sophie
@@ -94,17 +93,24 @@ kubectl apply -f deploy/secrets.yaml
 kubectl apply -f deploy/grafana-lgtm.yaml 
 ```
 
+wait for the observability stack to be ready and make a port-forward to access the UI on localhost:3000
+
+```
+kubectl port-forward service/lgtm 3000:3000 -n observability
+
+```
+
 5. install argocd
 ```
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 ```
 
-6. wait for argocd to be ready and make a port-forward
+6. wait for argocd to be ready and make a port-forward and access the UI on localhost:8001
 ```
 kubectl port-forward service/argocd-server 8001:80 -n argocd
 ```
 
-7. Get your argocd admin password
+7. Get your argocd admin password, user=admin
 ```
 kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 -d
 ```
@@ -121,8 +127,27 @@ and get the password and decode it with base64
 echo "PASSWORD" | base64 -d
 ```
 
-8. Create an argocd application with github repo
+8. Create an argocd application
 
 ```
-kubectl apply -f argocd/application.yaml
+kubectl apply -f deplpoy/application.yaml
 ```
+
+9. make a port-forward to the server to make requests
+
+```
+kubectl port-forward service/ms-sophie 8000:80 -n ms-sophie
+```
+
+# Check if it's working
+
+if everything is working, you should be able to access ArgoCD and Grafana ui
+
+
+![ArgoCD Dashboard](images/argocd.png)
+
+# Prometheus for metrics
+![Prometheus Dashboard](images/prometheus.png)
+
+# Tempo for tracing
+![Tempo Dashboard](images/tempo.png)
