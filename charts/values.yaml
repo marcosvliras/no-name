@@ -1,6 +1,6 @@
 image:
   repository: marcosls/sophie-api
-  tag: v1
+  tag: v4
   pullPolicy: IfNotPresent
 namespace: ms-sophie
 replicaCount: 1

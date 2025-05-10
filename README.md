@@ -67,31 +67,51 @@ API_KEY=
 ```
 
 
-# ArgoCD
+# Kubernetes
+## Deploying Sophie on Kubernetes
 
-1. create argocd namespace
+Deploy ms-sophie on Kubernetes with ArgoCD, and Grafana/Prometheus/Tempo for observability.
+
+1. Set your API on argocd/sercrets.yaml
+```
+API_KEY: 
+```
+
+2. create argocd namespace
 ```
 kubectl create namespace argocd
+kubectl create namespace ms-sophie
+kubectl create namespace observability
 ```
 
-2. install argocd
+3. Create secrets
+```
+kubectl apply -f deploy/secrets.yaml
+```
+
+4. Create the observability stack
+```
+kubectl apply -f deploy/grafana-lgtm.yaml 
+```
+
+5. install argocd
 ```
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 ```
 
-3. wait for argocd to be ready and make a port-forward
+6. wait for argocd to be ready and make a port-forward
 ```
 kubectl port-forward service/argocd-server 8001:80 -n argocd
 ```
 
-4. Get your argocd admin password
+7. Get your argocd admin password
 ```
 kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 -d
 ```
 
 or 
 
-````
+```
 kubectl get secret argocd-initial-admin-secret -n argocd -o yaml (or json)
 ```
 
@@ -101,7 +121,7 @@ and get the password and decode it with base64
 echo "PASSWORD" | base64 -d
 ```
 
-5. Create an argocd application with github repo
+8. Create an argocd application with github repo
 
 ```
 kubectl apply -f argocd/application.yaml

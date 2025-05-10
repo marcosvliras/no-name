@@ -1,0 +1,34 @@
+
+version: "3.9"
+services:
+  otlgm:
+    container_name: grafana-lgtm:0.11.1
+    image: grafana/otel-lgtm
+    ports:
+    - 3000:3000
+    - 4317:4317
+    - 4318:4318
+    - 9090:9090
+    networks:
+      - observability
+    volumes:
+      - ./grafana-data:/var/lib/grafana
+  
+  ms-sophie:
+    container_name: ms-sophie
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=otlgm:4317
+      - SERVICE_NAME=ms-sophie
+      - API_KEY=${API_KEY}
+    networks:
+      - observability
+
+networks:
+  observability:
+    driver: bridge

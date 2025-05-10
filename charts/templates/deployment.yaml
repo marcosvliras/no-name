@@ -33,3 +33,19 @@ spec:
             periodSeconds: {{ .Values.livelinessProbe.periodSeconds }}
             successThreshold: {{ .Values.livelinessProbe.successThreshold }}
             failureThreshold: {{ .Values.livelinessProbe.failureThreshold }}
+          env:
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ms-sophie
+                  key: API_KEY
+            - name: SERVICE_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: ms-sophie
+                  key: SERVICE_NAME
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: ms-sophie
+                  key: OTEL_EXPORTER_OTLP_ENDPOINT

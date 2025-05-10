@@ -3,7 +3,6 @@ package tracing
 import (
 	"fmt"
 	"log"
-	"os"
 
 	"context"
 
@@ -11,22 +10,19 @@ import (
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
 	"go.opentelemetry.io/otel/propagation"
-	"go.opentelemetry.io/otel/sdk/resource"
 	"go.opentelemetry.io/otel/sdk/trace"
-	semconv "go.opentelemetry.io/otel/semconv/v1.4.0"
+
+	"github.com/marcosvliras/sophie/internal/otel/config"
 )
 
 var (
-	ServiceName  = os.Getenv("SERVICE_NAME")
-	collectorURL = os.Getenv("OTEL_EXPORTER_OTLP_ENDPOINT")
-	Tracer       = otel.Tracer(ServiceName)
+	Tracer = otel.Tracer(config.ServiceName)
 )
 
-func newExporter(ctx context.Context) (*otlptrace.Exporter, error) {
+func traceExporter(ctx context.Context) (*otlptrace.Exporter, error) {
 	exporter, err := otlptracegrpc.New(
 		ctx,
-		otlptracegrpc.WithEndpoint(collectorURL),
-		otlptracegrpc.WithInsecure(),
+		otlptracegrpc.WithGRPCConn(config.Conn),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create OTLP trace exporter: %w", err)
@@ -35,25 +31,18 @@ func newExporter(ctx context.Context) (*otlptrace.Exporter, error) {
 }
 
 func InitTracer() func() {
+	log.Println(config.ServiceName)
+	log.Println(config.Resource)
+
 	ctx := context.Background()
-	exporter, err := newExporter(ctx)
+	exporter, err := traceExporter(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	resources, err := resource.New(
-		ctx,
-		resource.WithAttributes(
-			semconv.ServiceNameKey.String(ServiceName),
-		),
-	)
-	if err != nil {
-		log.Fatalf("failed to create resource: %v\n", err)
-	}
-
 	traceProvider := trace.NewTracerProvider(
 		trace.WithBatcher(exporter),
-		trace.WithResource(resources),
+		trace.WithResource(config.Resource),
 	)
 	otel.SetTracerProvider(traceProvider)
 	otel.SetTextMapPropagator(propagation.NewCompositeTextMapPropagator(propagation.TraceContext{}, propagation.Baggage{}))
@@ -71,7 +60,5 @@ func InitTracer() func() {
 //	if err != nil {
 //		return nil, fmt.Errorf("failed to initialize stdouttrace exporter %w", err)
 //	}
-//
 //	return exporter, nil
-//
 //}
