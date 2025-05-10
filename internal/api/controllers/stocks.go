@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/marcosvliras/sophie/internal/otel/tracing"
 	"github.com/marcosvliras/sophie/internal/service"
-	"github.com/marcosvliras/sophie/internal/tracing"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/propagation"
 )
@@ -31,6 +31,7 @@ func (ctrl *StocksCtrl) Handle(c *gin.Context) {
 	defer span.End()
 
 	symbolList := c.QueryArray("symbol")
+
 	if len(symbolList) == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "No symbols provided"})
 		return

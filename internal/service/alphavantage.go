@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/marcosvliras/sophie/internal/gateway"
-	"github.com/marcosvliras/sophie/internal/tracing"
+	"github.com/marcosvliras/sophie/internal/otel/tracing"
 	"github.com/marcosvliras/sophie/stock"
 )
 
