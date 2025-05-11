@@ -56,10 +56,12 @@ pre-commit install
 
 - 5.5 Build the project
 ```
-go build -o stock-cli cmd/cli/sophie/main.go
+go build -o sophie cmd/cli/sophie/main.go
 ```
 
 # API 
+![API](images/arc.png)
+
 
 1. set up your environment with alphavante api key: https://www.alphavantage.co/documentation/
 ```
@@ -150,4 +152,4 @@ if everything is working, you should be able to access ArgoCD and Grafana ui
 ![Prometheus Dashboard](images/prometheus.png)
 
 # Tempo for tracing
-![Tempo Dashboard](images/tempo.png)
+![Tempo Dashboard](images/grafana-tempo.png)

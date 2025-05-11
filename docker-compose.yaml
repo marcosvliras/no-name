@@ -2,8 +2,8 @@
 version: "3.9"
 services:
   otlgm:
-    container_name: grafana-lgtm:0.11.1
-    image: grafana/otel-lgtm
+    container_name: grafana-lgtm
+    image: grafana/otel-lgtm:0.11.1
     ports:
     - 3000:3000
     - 4317:4317
