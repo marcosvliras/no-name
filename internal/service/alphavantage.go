@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/marcosvliras/sophie/internal/gateway"
+	"github.com/marcosvliras/sophie/internal/otel/logging"
 	"github.com/marcosvliras/sophie/internal/otel/tracing"
 	"github.com/marcosvliras/sophie/stock"
 )
@@ -28,6 +29,8 @@ func (svc *AlphavantageSVC) GetStockData(ctx context.Context, data []string) []s
 	ctx, span := tracing.Tracer.Start(ctx, "GetStockData")
 	defer span.End()
 
+	logging.SLogger.Info(ctx, fmt.Sprintf("Fetching stock data for symbols: %v", data))
+
 	var wg sync.WaitGroup
 	stockData := make([]stock.AggStockData, len(data))
 
@@ -38,7 +41,7 @@ func (svc *AlphavantageSVC) GetStockData(ctx context.Context, data []string) []s
 			defer wg.Done()
 			aggData, err := svc.getSingleStockData(ctx, symbol)
 			if err != nil {
-				fmt.Println("Error fetching data for symbol:", symbol, "Error:", err)
+				logging.SLogger.Error(ctx, fmt.Sprintf("Error fetching data for symbol: %s, Error: %v", symbol, err))
 			}
 			stockData[index] = aggData
 		}(ctx, symbol, index)

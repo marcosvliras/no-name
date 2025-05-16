@@ -10,6 +10,8 @@ When I mentioned the name to a few friends, one of them immediately thought of t
 
 ## CLI
 
+
+
 1. set up your environment with alphavante api key: https://www.alphavantage.co/documentation/
 ```
 API_KEY=
@@ -153,3 +155,6 @@ if everything is working, you should be able to access ArgoCD and Grafana ui
 
 # Tempo for tracing
 ![Tempo Dashboard](images/grafana-tempo.png)
+
+# Loki for logs
+![Loki Dashboard](images/loki.png)

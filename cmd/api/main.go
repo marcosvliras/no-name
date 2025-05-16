@@ -1,11 +1,13 @@
 package main
 
 import (
+	"context"
 	"log"
 
 	"github.com/gin-gonic/gin"
 	"github.com/marcosvliras/sophie/internal/api/controllers"
 	"github.com/marcosvliras/sophie/internal/api/middleware"
+	"github.com/marcosvliras/sophie/internal/otel/logging"
 	"github.com/marcosvliras/sophie/internal/otel/metrics"
 	"github.com/marcosvliras/sophie/internal/otel/tracing"
 	"github.com/marcosvliras/sophie/internal/service"
@@ -23,8 +25,15 @@ func main() {
 	cleanupMeter := metrics.InitMetrics()
 	defer cleanupMeter()
 
+	err := logging.InitLogger()
+	if err != nil {
+		panic(err)
+	}
+	defer logging.SLogger.Close(context.Background())
+
 	server := gin.Default()
 	server.Use(otelgin.Middleware(config.ServiceName))
+	server.Use(middleware.LoggerMiddleware())
 	server.Use(middleware.RequestCounterMiddleware())
 
 	svc := service.NewAlphavantageSVC()
