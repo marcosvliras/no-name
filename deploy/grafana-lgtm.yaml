@@ -71,10 +71,23 @@ spec:
         - name: loki-data
           emptyDir: {}
         - name: grafana-data
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: grafana-data-pvc
         - name: loki-storage
           emptyDir: {}
         - name: p8s-storage
           emptyDir: {}
         - name: pyroscope-storage
           emptyDir: {}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: grafana-data-pvc
+  namespace: observability
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
