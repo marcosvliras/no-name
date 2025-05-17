@@ -5,12 +5,19 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/marcosvliras/sophie/internal/otel/logging"
 	"github.com/marcosvliras/sophie/internal/service"
 	"github.com/marcosvliras/sophie/printer"
 	"github.com/spf13/cobra"
 )
 
 func main() {
+	err := logging.InitLogger("cli", nil)
+	if err != nil {
+		panic(err)
+	}
+	defer logging.SLogger.Close(context.Background())
+
 	svc := service.NewAlphavantageSVC()
 
 	var symbols []string

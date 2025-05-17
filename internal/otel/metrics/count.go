@@ -8,29 +8,12 @@ import (
 
 	"github.com/marcosvliras/sophie/internal/otel/config"
 	"go.opentelemetry.io/otel"
-	"go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc"
 	sdkmetric "go.opentelemetry.io/otel/sdk/metric"
 )
 
-var Meter = otel.Meter(config.ServiceName)
+var Meter = otel.Meter(config.GetServiceName())
 
-func metricExporter(ctx context.Context) (*otlpmetricgrpc.Exporter, error) {
-	exporter, err := otlpmetricgrpc.New(
-		ctx,
-		otlpmetricgrpc.WithGRPCConn(config.Conn),
-	)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create OTLP trace exporter: %w", err)
-	}
-	return exporter, nil
-}
-
-func InitMetrics() func() {
-	ctx := context.Background()
-	exporter, err := metricExporter(ctx)
-	if err != nil {
-		return nil
-	}
+func InitMetrics(ctx context.Context, exporter sdkmetric.Exporter) func() {
 
 	meterProvider := sdkmetric.NewMeterProvider(
 		sdkmetric.WithReader(sdkmetric.NewPeriodicReader(exporter)),
