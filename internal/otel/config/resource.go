@@ -17,7 +17,7 @@ func newResource() error {
 	Resource, err = resource.New(
 		context.Background(),
 		resource.WithAttributes(
-			semconv.ServiceNameKey.String(ServiceName),
+			semconv.ServiceNameKey.String(GetServiceName()),
 			semconv.ServiceVersionKey.String("1.0.0"),
 			semconv.TelemetrySDKLanguageGo,
 		),

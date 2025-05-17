@@ -14,7 +14,7 @@ func initConn() error {
 	var err error
 
 	Conn, err = grpc.NewClient(
-		CollectorURL,
+		GetCollectorURL(),
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
 	if err != nil {

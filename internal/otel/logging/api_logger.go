@@ -37,7 +37,7 @@ func newSophieLogger(exporter sdklog.Exporter) *sophieLogger {
 		sdklog.WithProcessor(processor),
 	)
 
-	logger := logProvider.Logger(config.ServiceName)
+	logger := logProvider.Logger(config.GetServiceName())
 
 	return &sophieLogger{
 		logger:         logger,

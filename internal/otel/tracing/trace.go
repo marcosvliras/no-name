@@ -1,14 +1,11 @@
 package tracing
 
 import (
-	"fmt"
 	"log"
 
 	"context"
 
 	"go.opentelemetry.io/otel"
-	"go.opentelemetry.io/otel/exporters/otlp/otlptrace"
-	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
 	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/sdk/trace"
 
@@ -16,29 +13,10 @@ import (
 )
 
 var (
-	Tracer = otel.Tracer(config.ServiceName)
+	Tracer = otel.Tracer(config.GetServiceName())
 )
 
-func traceExporter(ctx context.Context) (*otlptrace.Exporter, error) {
-	exporter, err := otlptracegrpc.New(
-		ctx,
-		otlptracegrpc.WithGRPCConn(config.Conn),
-	)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create OTLP trace exporter: %w", err)
-	}
-	return exporter, nil
-}
-
-func InitTracer() func() {
-	log.Println(config.ServiceName)
-	log.Println(config.Resource)
-
-	ctx := context.Background()
-	exporter, err := traceExporter(ctx)
-	if err != nil {
-		log.Fatal(err)
-	}
+func InitTracer(ctx context.Context, exporter trace.SpanExporter) func() {
 
 	traceProvider := trace.NewTracerProvider(
 		trace.WithBatcher(exporter),
@@ -54,11 +32,3 @@ func InitTracer() func() {
 		}
 	}
 }
-
-//func newExporter() (*stdouttrace.Exporter, error) {
-//	exporter, err := stdouttrace.New(stdouttrace.WithPrettyPrint())
-//	if err != nil {
-//		return nil, fmt.Errorf("failed to initialize stdouttrace exporter %w", err)
-//	}
-//	return exporter, nil
-//}
