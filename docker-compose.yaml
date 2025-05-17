@@ -12,7 +12,7 @@ services:
     networks:
       - observability
     volumes:
-      - ./grafana-data:/var/lib/grafana
+      - ./grafana-data:/data/grafana/data 
   
   ms-sophie:
     container_name: ms-sophie
