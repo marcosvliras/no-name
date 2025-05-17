@@ -70,6 +70,12 @@ go build -o sophie cmd/cli/sophie/main.go
 API_KEY=
 ```
 
+# Docker 
+
+set API_KEY and run:
+```
+docker compose up 
+```
 
 # Kubernetes
 
