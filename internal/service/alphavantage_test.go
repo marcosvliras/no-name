@@ -1,6 +1,7 @@
 package service
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"math"
@@ -9,6 +10,7 @@ import (
 
 	"github.com/golang/mock/gomock"
 	m "github.com/marcosvliras/sophie/internal/gateway/mock_gateway"
+	"github.com/marcosvliras/sophie/internal/otel/logging"
 	"github.com/marcosvliras/sophie/stock"
 	"github.com/stretchr/testify/assert"
 )
@@ -31,6 +33,12 @@ func roundToTwoDecimals(f float64) float64 {
 }
 
 func TestAlphavantageSVC(t *testing.T) {
+
+	err := logging.InitLogger("cli", nil)
+	if err != nil {
+		panic(err)
+	}
+	defer logging.SLogger.Close(context.Background())
 
 	t.Run("GetStockData when gateway work as expected", func(t *testing.T) {
 		bbase, _ := jsonToStockData("mock_service/bbas3.json")

@@ -14,6 +14,8 @@ import (
 
 	"github.com/marcosvliras/sophie/internal/otel/config"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
+	"go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploggrpc"
+	"go.opentelemetry.io/otel/metric"
 )
 
 func main() {
@@ -25,16 +27,32 @@ func main() {
 	cleanupMeter := metrics.InitMetrics()
 	defer cleanupMeter()
 
-	err := logging.InitLogger()
+	exporter, err := otlploggrpc.New(
+		context.TODO(),
+		otlploggrpc.WithGRPCConn(config.Conn),
+		otlploggrpc.WithInsecure(),
+	)
+	if err != nil {
+		panic(err)
+	}
+	err = logging.InitLogger("api", exporter)
 	if err != nil {
 		panic(err)
 	}
 	defer logging.SLogger.Close(context.Background())
 
+	counter, err := metrics.Meter.Int64Counter(
+		"api_request_count",
+		metric.WithDescription("Counts the number of HTTP requests"),
+	)
+	if err != nil {
+		panic("failed to create request counter metric")
+	}
+
 	server := gin.Default()
 	server.Use(otelgin.Middleware(config.ServiceName))
 	server.Use(middleware.LoggerMiddleware())
-	server.Use(middleware.RequestCounterMiddleware())
+	server.Use(middleware.RequestCounterMiddleware(counter))
 
 	svc := service.NewAlphavantageSVC()
 	stockCtrl := controllers.NewStocksCtrl(svc)

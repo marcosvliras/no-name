@@ -73,7 +73,7 @@ API_KEY=
 
 # Kubernetes
 
-Deploy ms-sophie on Kubernetes with ArgoCD, and Grafana/Prometheus/Tempo for observability.
+Deploy ms-sophie on Kubernetes with ArgoCD, and Grafana/Prometheus/Tempo/Loki for observability.
 
 1. Set your API on argocd/sercrets.yaml
 ```
@@ -134,7 +134,7 @@ echo "PASSWORD" | base64 -d
 8. Create an argocd application
 
 ```
-kubectl apply -f deplpoy/application.yaml
+kubectl apply -f deploy/application.yaml
 ```
 
 9. make a port-forward to the server to make requests

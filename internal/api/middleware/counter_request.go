@@ -1,24 +1,21 @@
 package middleware
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
-	"github.com/marcosvliras/sophie/internal/otel/metrics"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/metric"
 	"go.opentelemetry.io/otel/propagation"
 )
 
-func RequestCounterMiddleware() gin.HandlerFunc {
-	counter, err := metrics.Meter.Int64Counter(
-		"api_request_count",
-		metric.WithDescription("Counts the number of HTTP requests"),
-	)
-	if err != nil {
-		panic("failed to create request counter metric")
-	}
+type Counter interface {
+	Add(ctx context.Context, value int64, options ...metric.AddOption)
+}
+
+func RequestCounterMiddleware(counter Counter) gin.HandlerFunc {
 
 	return func(c *gin.Context) {
 

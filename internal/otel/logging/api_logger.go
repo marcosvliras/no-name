@@ -17,70 +17,20 @@ import (
 	"time"
 
 	"github.com/marcosvliras/sophie/internal/otel/config"
-	"go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploggrpc"
 
 	"go.opentelemetry.io/otel/log"
 
 	sdklog "go.opentelemetry.io/otel/sdk/log"
 )
 
-var SLogger *SophieLogger
-
-func InitLogger() error {
-	var err error
-
-	ctx := context.Background()
-
-	SLogger, err = NewSophieLogger(ctx)
-	if err != nil {
-		return err
-	}
-	return nil
-
-}
-
-func logExporter(ctx context.Context) (*otlploggrpc.Exporter, error) {
-
-	exporter, err := otlploggrpc.New(
-		ctx,
-		otlploggrpc.WithGRPCConn(config.Conn),
-		otlploggrpc.WithInsecure(),
-	)
-
-	if err != nil {
-		return nil, err
-	}
-	return exporter, nil
-}
-
-//func stdoutExporter(ctx context.Context) (*stdoutlog.Exporter, error) {
-//	exporter, err := stdoutlog.New(stdoutlog.WithPrettyPrint())
-//	if err != nil {
-//		return nil, err
-//	}
-//	return exporter, nil
-//}
-
-type Logger interface {
-	Debug(msg string, args ...interface{})
-	Info(msg string, args ...interface{})
-	Warning(msg string, args ...interface{})
-	Error(msg string, args ...interface{})
-	Fatal(msg string, args ...interface{})
-}
-
-type SophieLogger struct {
+type sophieLogger struct {
 	logger         log.Logger
 	loggerProvider *sdklog.LoggerProvider
 }
 
-func NewSophieLogger(ctx context.Context) (*SophieLogger, error) {
-	otelExporter, err := logExporter(ctx)
-	if err != nil {
-		return nil, err
-	}
+func newSophieLogger(exporter sdklog.Exporter) *sophieLogger {
 
-	processor := sdklog.NewBatchProcessor(otelExporter)
+	processor := sdklog.NewBatchProcessor(exporter)
 
 	logProvider := sdklog.NewLoggerProvider(
 		sdklog.WithResource(config.Resource),
@@ -89,13 +39,13 @@ func NewSophieLogger(ctx context.Context) (*SophieLogger, error) {
 
 	logger := logProvider.Logger(config.ServiceName)
 
-	return &SophieLogger{
+	return &sophieLogger{
 		logger:         logger,
 		loggerProvider: logProvider,
-	}, err
+	}
 }
 
-func (l *SophieLogger) Debug(ctx context.Context, msg string) {
+func (l *sophieLogger) Debug(ctx context.Context, msg string) {
 	record := log.Record{}
 
 	record.SetBody(log.StringValue(msg))
@@ -108,7 +58,7 @@ func (l *SophieLogger) Debug(ctx context.Context, msg string) {
 	)
 }
 
-func (l *SophieLogger) Info(ctx context.Context, msg string) {
+func (l *sophieLogger) Info(ctx context.Context, msg string) {
 	record := log.Record{}
 
 	record.SetBody(log.StringValue(msg))
@@ -121,7 +71,7 @@ func (l *SophieLogger) Info(ctx context.Context, msg string) {
 	)
 }
 
-func (l *SophieLogger) Warning(ctx context.Context, msg string) {
+func (l *sophieLogger) Warning(ctx context.Context, msg string) {
 	record := log.Record{}
 
 	record.SetBody(log.StringValue(msg))
@@ -134,7 +84,7 @@ func (l *SophieLogger) Warning(ctx context.Context, msg string) {
 	)
 }
 
-func (l *SophieLogger) Error(ctx context.Context, msg string) {
+func (l *sophieLogger) Error(ctx context.Context, msg string) {
 	record := log.Record{}
 
 	record.SetBody(log.StringValue(msg))
@@ -147,7 +97,7 @@ func (l *SophieLogger) Error(ctx context.Context, msg string) {
 	)
 }
 
-func (l *SophieLogger) Fatal(ctx context.Context, msg string) {
+func (l *sophieLogger) Fatal(ctx context.Context, msg string) {
 	record := log.Record{}
 
 	record.SetBody(log.StringValue(msg))
@@ -160,7 +110,7 @@ func (l *SophieLogger) Fatal(ctx context.Context, msg string) {
 	)
 }
 
-func (l *SophieLogger) Close(ctx context.Context) error {
+func (l *sophieLogger) Close(ctx context.Context) error {
 	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
 
