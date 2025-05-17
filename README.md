@@ -164,3 +164,12 @@ if everything is working, you should be able to access ArgoCD and Grafana ui
 
 # Loki for logs
 ![Loki Dashboard](images/loki.png)
+
+# References
+
+- https://opentelemetry.io/docs/concepts/signals
+- https://opentelemetry.io/docs/languages/go/
+- https://github.com/open-telemetry/opentelemetry-go
+- https://pkg.go.dev/go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin#Middleware
+- https://www.youtube.com/playlist?list=PLOQgLBuj2-3IL2SzHv1CHaBBHJEvHZE0m
+- https://github.com/grafana/docker-otel-lgtm
